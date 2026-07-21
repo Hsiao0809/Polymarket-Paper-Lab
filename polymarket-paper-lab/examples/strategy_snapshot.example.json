@@ -1,0 +1,72 @@
+{
+  "complete_sets": [
+    {
+      "name": "Synthetic YES + NO complete set",
+      "verified_complements": true,
+      "yes": {
+        "label": "Example market YES",
+        "ask": 0.45,
+        "ask_size": 120,
+        "fee_rate": 0.04,
+        "slippage": 0.002
+      },
+      "no": {
+        "label": "Example market NO",
+        "ask": 0.46,
+        "ask_size": 80,
+        "fee_rate": 0.04,
+        "slippage": 0.002
+      }
+    }
+  ],
+  "containment_pairs": [
+    {
+      "name": "NVDA above 230 implies NVDA above 220",
+      "verified_containment": true,
+      "subset_no": {
+        "label": "NO: NVDA above 230 at same close",
+        "ask": 0.48,
+        "ask_size": 50,
+        "fee_rate": 0.04,
+        "slippage": 0.002
+      },
+      "superset_yes": {
+        "label": "YES: NVDA above 220 at same close",
+        "ask": 0.47,
+        "ask_size": 70,
+        "fee_rate": 0.04,
+        "slippage": 0.002
+      }
+    }
+  ],
+  "partitions": [
+    {
+      "name": "Synthetic exhaustive three-outcome event",
+      "mutually_exclusive": true,
+      "exhaustive": true,
+      "outcomes_yes": [
+        {
+          "label": "Outcome A YES",
+          "ask": 0.28,
+          "ask_size": 100,
+          "fee_rate": 0.04,
+          "slippage": 0.001
+        },
+        {
+          "label": "Outcome B YES",
+          "ask": 0.31,
+          "ask_size": 60,
+          "fee_rate": 0.04,
+          "slippage": 0.001
+        },
+        {
+          "label": "Outcome C YES",
+          "ask": 0.30,
+          "ask_size": 90,
+          "fee_rate": 0.04,
+          "slippage": 0.001
+        }
+      ]
+    }
+  ]
+}

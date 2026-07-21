@@ -1,0 +1,2 @@
+# Official Python CLOB V2 SDK listed in Polymarket documentation.
+py-clob-client-v2==1.0.1
