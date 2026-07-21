@@ -1,0 +1,38 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+build/
+dist/
+*.egg-info/
+
+# 虛擬環境
+.venv/
+venv/
+env/
+
+# 本機資料庫
+# 注意：雲端採集的資料走 data/*.jsonl，那個「要」進版控，不要排除
+*.db
+*.sqlite
+*.sqlite3
+
+# 分析輸出圖檔
+*.png
+
+# 憑證與金鑰 —— 絕對不要進版控
+.env
+.env.*
+*.key
+*.pem
+secrets.json
+credentials.json
+
+# 編輯器 / 作業系統
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
