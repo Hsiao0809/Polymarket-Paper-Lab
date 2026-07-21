@@ -37,7 +37,7 @@ def find_today_market(series_slug: str = config.SERIES_SLUG) -> dict | None:
     for ev in events:
         for m in ev.get("markets", []):
             if m.get("endDateIso") == today and not m.get("closed"):
-                return m
+                return _ensure_rewards(m)
     # 退路：直接查 markets
     markets = _get(
         f"{config.GAMMA_BASE}/markets",
@@ -45,8 +45,34 @@ def find_today_market(series_slug: str = config.SERIES_SLUG) -> dict | None:
     )
     for m in markets:
         if m.get("endDateIso") == today and not m.get("closed"):
-            return m
+            return _ensure_rewards(m)
     return None
+
+
+def _ensure_rewards(market: dict) -> dict:
+    """補上 clobRewards。
+
+    /events 端點回傳的巢狀 market 物件不含 clobRewards（實測 2026-07-21，
+    導致 rewards_daily 記成 null）。改用 slug 直接查 /markets 補齊——
+    掛單獎勵金額是做市側分析的核心欄位，不能漏。
+    """
+    if market.get("clobRewards"):
+        return market
+    slug = market.get("slug")
+    if not slug:
+        return market
+    try:
+        full = _get(f"{config.GAMMA_BASE}/markets", {"slug": slug})
+        if full and isinstance(full, list):
+            merged = dict(market)
+            for key in ("clobRewards", "rewardsMinSize", "rewardsMaxSpread",
+                        "clobTokenIds", "outcomes", "feeSchedule"):
+                if full[0].get(key) is not None:
+                    merged[key] = full[0][key]
+            return merged
+    except Exception:
+        pass  # 補不到就照原樣回傳，errors 欄位不會被污染
+    return market
 
 
 def _parse_json_field(raw, default):
