@@ -1,0 +1,30 @@
+# One-shot cleanup. Run it once from the Actions tab, then delete this file.
+name: Cleanup pycache
+
+on: workflow_dispatch
+
+permissions:
+  contents: write
+
+jobs:
+  clean:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Remove __pycache__ from version control
+        run: |
+          git config user.name  "collector-bot"
+          git config user.email "collector-bot@users.noreply.github.com"
+          echo "Tracked .pyc files before:"
+          git ls-files | grep -c "\.pyc$" || true
+          git rm -r --cached --ignore-unmatch "*__pycache__*" > /dev/null || true
+          git add -A
+          if git diff --staged --quiet; then
+            echo "Nothing to clean."
+            exit 0
+          fi
+          git commit -m "chore: remove __pycache__ from version control"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
+          echo "Tracked .pyc files after:"
+          git ls-files | grep -c "\.pyc$" || echo 0
